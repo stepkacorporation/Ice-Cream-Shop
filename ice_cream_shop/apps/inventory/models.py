@@ -57,3 +57,19 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
         ordering = ('name', )
 
+
+class Supplier(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Название поставщика')
+    address = models.CharField(max_length=255, verbose_name='Адрес поставщика')
+    phone_number = models.CharField(max_length=20, verbose_name='Номер телефона')
+    email = models.EmailField(verbose_name='Эл. почта')
+    website = models.URLField(max_length=255, blank=True, null=True, verbose_name='Веб-сайт поставщика')
+    additional_notes = models.TextField(blank=True, null=True, verbose_name='Дополнительные заметки')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Поставщик'
+        verbose_name_plural = 'Поставщики'
+        ordering = ('id', )
