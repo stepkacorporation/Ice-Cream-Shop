@@ -11,7 +11,7 @@ class Product(models.Model):
     code = models.PositiveIntegerField(verbose_name='Код товара')
 
     # Основные характеристики
-    type = models.CharField(max_length=255, verbose_name='Тип мороженного')
+    type = models.CharField(max_length=255, verbose_name='Вид мороженного')
     supplements = models.CharField(max_length=255, verbose_name='Добавки')
     on_a_stick = models.BooleanField(default=False, verbose_name='На палочке')
     type_of_packaging = models.CharField(max_length=255, verbose_name='Вид упаковки')
@@ -43,19 +43,6 @@ class Product(models.Model):
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
         ordering = ('id', )
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Категория')
-    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
-        ordering = ('name', )
 
 
 class Supplier(models.Model):
