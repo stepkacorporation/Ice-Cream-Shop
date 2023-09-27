@@ -5,6 +5,7 @@ class Product(models.Model):
     # Основное
     name = models.CharField(max_length=255, verbose_name='Название товара')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
+    price = models.PositiveIntegerField(verbose_name='Цена')
 
     # Заводские данные о товаре
     brand = models.CharField(max_length=255, verbose_name='Бренд')
@@ -60,3 +61,20 @@ class Supplier(models.Model):
         verbose_name = 'Поставщик'
         verbose_name_plural = 'Поставщики'
         ordering = ('id', )
+
+
+class StockEntry(models.Model):
+    product = models.ForeignKey('Product', on_delete=models.PROTECT, verbose_name='Товар')
+    delivery_date = models.DateField(auto_now_add=True, verbose_name='Дата поставки')
+    quantity_delivered = models.PositiveIntegerField(verbose_name='Кол-во поставленных товаров')
+    purchase_price = models.PositiveIntegerField(verbose_name='Цена закупки')
+    supplier = models.ForeignKey('Supplier', on_delete=models.PROTECT, verbose_name='Поставщик')
+    notes = models.TextField(blank=True, null=True, verbose_name='Заметки о поставке')
+
+    def __str__(self):
+        return f'{self.product} {self.delivery_date}'
+
+    class Meta:
+        verbose_name = 'Поставка товара'
+        verbose_name_plural = 'Поставки товаров'
+        ordering = ('-id', '-delivery_date')
