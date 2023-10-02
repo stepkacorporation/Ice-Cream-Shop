@@ -1,9 +1,12 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
 class Employee(models.Model):
     first_name = models.CharField(max_length=255, verbose_name='Имя')
     last_name = models.CharField(max_length=255, verbose_name='Фамилия')
+    # Изменить здесь модель User на новую модель пользователя
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Username')
     position = models.ForeignKey('Position', on_delete=models.PROTECT, verbose_name='Должность')
     phone = models.CharField(max_length=15, verbose_name='Телефон')
     email = models.EmailField(max_length=255, verbose_name='Эл. почта')
