@@ -1,5 +1,5 @@
-from django.contrib.auth.models import User
 from django.db import models
+from django.conf import settings
 
 
 class Order(models.Model):
@@ -10,8 +10,7 @@ class Order(models.Model):
         ('canceled', 'Отменен'),
     )
 
-    # Изменить здесь модель User на новую модель пользователя
-    user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='Пользователь')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, verbose_name='Пользователь')
     order_datetime = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время заказа')
     status = models.CharField(max_length=12, choices=ORDER_STATUS, default='pending', verbose_name='Статус')
     total_cost = models.PositiveIntegerField(default=0, verbose_name='Стоимость заказа (руб.)')
@@ -41,4 +40,4 @@ class OrderItem(models.Model):
     class Meta:
         verbose_name = 'Позиция заказа'
         verbose_name_plural = 'Позиции заказа'
-        ordering = ('-id', )
+        ordering = ('-id',)
