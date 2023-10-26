@@ -1,0 +1,31 @@
+{% extends 'authentication/base_auth.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card border-primary col-md-6 mx-auto">
+        <div class="card-header">{{ title }}</div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{ form.non_field_errors.0 }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+                    </div>
+                    {% endif %}
+
+                    {{ form.username|as_crispy_field }}
+                    {{ form.password|as_crispy_field }}
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-primary mx-auto">Войти</button>
+                </div>
+                <p class="mt-2 mb-0 text-center">Забыли пароль? <a href="#">Восстановить</a></p>
+                <p class="mt-0 mb-0 text-center">Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

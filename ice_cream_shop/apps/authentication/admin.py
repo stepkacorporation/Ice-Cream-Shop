@@ -8,7 +8,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('id', 'username', 'email', 'points', 'is_verified', 'is_staff')
     fieldsets = (
         ('Основная информация', {
-            'fields': ('first_name', 'last_name', 'username', 'password', 'email', 'groups', 'user_permissions'),
+            'fields': ('first_name', 'last_name', 'username', 'password', 'email', 'user_groups', 'user_permissions'),
         }),
         ('Дополнительно', {
             'fields': ('is_active', 'is_verified', 'is_staff', 'is_superuser', 'date_joined', 'last_login'),

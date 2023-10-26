@@ -3,7 +3,7 @@ from django.db import models
 
 
 class UserProfile(AbstractUser):
-    groups = models.ManyToManyField('UserGroup', verbose_name='Группы', blank=True)
+    user_groups = models.ManyToManyField('UserGroup', verbose_name='Группы', blank=True)
     points = models.PositiveIntegerField(default=0, verbose_name='Баллы', blank=True)
     is_verified = models.BooleanField(default=False, verbose_name='Подтвержденный email', blank=True)
 
