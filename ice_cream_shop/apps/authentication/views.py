@@ -1,7 +1,6 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from .forms import RegisterUserForm, LoginUserForm
@@ -27,7 +26,7 @@ class RegisterUser(CreateView):
 
         user = form.save()
         login(self.request, user)
-        return redirect('catalog')  # Изменить на какую-то страницу
+        return redirect('catalog')
 
 
 class LoginUser(LoginView):

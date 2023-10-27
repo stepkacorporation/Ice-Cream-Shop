@@ -12,7 +12,7 @@ def username_validator(value):
 
 
 def _string_validator(value, error_message):
-    if not re.search(r'^[a-zA-Z а-яА-ЯёЁ]+$', value):
+    if not re.search(r'^[a-zA-Zа-яА-ЯёЁ]+$', value):
         raise ValidationError(error_message)
 
 
