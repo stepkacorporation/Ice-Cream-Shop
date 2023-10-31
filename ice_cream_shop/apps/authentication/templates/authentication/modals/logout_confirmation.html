@@ -1,0 +1,27 @@
+<!-- Кнопка-триггер модального окна -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#logoutConformationModal">
+    Выйти
+</button>
+
+<!-- Модальное окно -->
+<div class="modal fade" id="logoutConformationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="logoutConformationModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="logoutConformationModalLabel">Выход из аккаунта</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                Вы действительно хотите выйти из вашего аккаунта?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary" name="logout_button">Выйти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

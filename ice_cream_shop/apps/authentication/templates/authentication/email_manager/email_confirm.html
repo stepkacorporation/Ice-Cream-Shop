@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{# Исключаем блок header #}
+{% endblock header %}
+
+{% block content %}
+<p>Для подтверждения вашего email перейдите по следующей ссылке:</p>
+<a href="{{ confirmation_link }}">{{ confirmation_link }}</a>
+{% endblock content %}
+
+{% block footer %}
+{# Исключаем блок footer #}
+{% endblock footer %}
+
+{% block modals %}
+{# Исключаем блок modals #}
+{% endblock modals %}

@@ -71,13 +71,41 @@ class UserProfilePointsTest(UserProfileTest):
 
 class UserProfileIsVerifiedTest(UserProfileTest):
     def test_is_verified_label(self):
-        field_label = self.user._meta.get_field('is_verified').verbose_name
+        field_label = self.user._meta.get_field('email_is_verified').verbose_name
         self.assertEqual(field_label, 'Подтвержденный email')
 
     def test_is_verified_default_value(self):
-        default_value = self.user._meta.get_field('is_verified').default
+        default_value = self.user._meta.get_field('email_is_verified').default
         self.assertEqual(default_value, False)
 
     def test_is_verified_blank(self):
-        is_blank = self.user._meta.get_field('is_verified').blank
+        is_blank = self.user._meta.get_field('email_is_verified').blank
         self.assertEqual(is_blank, True)
+
+
+class UserProfileEmailVerificationTokenTest(UserProfileTest):
+    def test_email_verification_token_max_length(self):
+        max_length = self.user._meta.get_field('email_verification_token').max_length
+        self.assertEqual(max_length, 255)
+
+    def test_email_verification_token_label(self):
+        field_label = self.user._meta.get_field('email_verification_token').verbose_name
+        self.assertEqual(field_label, 'Email-токен')
+
+    def test_email_verification_token_blank(self):
+        is_blank = self.user._meta.get_field('email_verification_token').blank
+        self.assertEqual(is_blank, True)
+
+
+class UserProfileLastEmailVerificationRequestTest(UserProfileTest):
+    def test_last_email_verification_request_label(self):
+        field_label = self.user._meta.get_field('last_email_verification_request').verbose_name
+        self.assertEqual(field_label, 'Дата последней отправки email пользователю')
+
+    def test_last_email_verification_request_blank(self):
+        is_blank = self.user._meta.get_field('last_email_verification_request').blank
+        self.assertEqual(is_blank, True)
+
+    def test_last_email_verification_request_null(self):
+        is_null = self.user._meta.get_field('last_email_verification_request').null
+        self.assertEqual(is_null, True)

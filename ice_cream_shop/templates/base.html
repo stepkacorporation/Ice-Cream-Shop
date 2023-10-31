@@ -10,29 +10,52 @@
 </head>
 
 <body>
-    <header>
-        {% block header %}
-        {% include 'header.html' %}
-        {% endblock header %}
-    </header>
+<header>
+    {% block header %}
+    {% include 'header.html' %}
+    {% endblock header %}
+</header>
 
-    <main>
-        {% block content %}
-        {% endblock content %}
-    </main>
+<main>
+    {% if user.is_authenticated and not user.email_is_verified %}
+    <div class="alert alert-success p-2 alert-dismissible fade show"
+         role="alert" style="margin-bottom: 2px;">
+        <div class="me-3">Мы отправили вам письмо для подтверждения адреса электронной почты. Пожалуйста, перейдите по
+            ссылке в письме, чтобы завершить регистрацию.
+        </div>
+        <button type="button" class="btn-close p-1" data-bs-dismiss="alert" aria-label="Close"
+                style="position: absolute; top: 50%; transform: translate(-50%, -50%);"></button>
+    </div>
+    {% endif %}
 
-    <footer>
-        {% block footer %}
-        {% include 'footer.html' %}
-        {% endblock footer %}
-    </footer>
+    {% block user_messages %}
+    {% if messages %}
+    {% for message in messages %}
+    {% include 'alert_message.html' %}
+    {% endfor %}
+    {% endif %}
+    {% endblock user_messages %}
 
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    {% block content %}
+    {% endblock content %}
+</main>
 
-    {% block extra_scripts %}
-    {% endblock extra_scripts %}
+<footer>
+    {% block footer %}
+    {% include 'footer.html' %}
+    {% endblock footer %}
+</footer>
+
+{% block modals %}
+{% include 'authentication/modals/logout_confirmation.html' %}
+{% endblock modals %}
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+{% block extra_scripts %}
+{% endblock extra_scripts %}
 </body>
 
 </html>

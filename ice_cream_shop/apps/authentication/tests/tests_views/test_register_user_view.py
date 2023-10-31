@@ -1,4 +1,5 @@
-from django.test import TestCase
+from django.core import mail
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from ...models import UserProfile
@@ -11,7 +12,7 @@ class RegisterUserTest(TestCase):
             'first_name': 'FirstName',
             'last_name': 'LastName',
             'username': 'itsmyusername',
-            'email': 'example@mail.ru',
+            'email': 'popcornchannel7@gmail.com',
             'password1': 'its a super hard password',
             'password2': 'its a super hard password',
         }
@@ -44,3 +45,18 @@ class RegisterUserTest(TestCase):
         self.assertEqual(response.status_code, 200)
         # Убедимся, что пользователь не был создан
         self.assertFalse(UserProfile.objects.filter(username=user_data['username']).exists())
+
+    @override_settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
+    def test_successful_registration_sends_email(self):
+        response = self.client.post(reverse('register'), data=self.user_data)
+
+        self.assertEqual(response.status_code, 302)  # Проверяем, что редирект произошел
+
+        self.assertEqual(len(mail.outbox), 1)  # Проверяем, что было отправлено ровно одно письмо
+        sent_email = mail.outbox[0]  # Получаем отправленное письмо
+        # Проверяем, что письмо отправлено на правильный адрес
+        self.assertEqual(sent_email.to, [self.user_data['email']])
+
+        # Проверяем содержание письма
+        self.assertIn('Подтвердите ваш email', sent_email.subject)
+        self.assertIn('Для подтверждения вашего email перейдите по следующей ссылке:', sent_email.body)

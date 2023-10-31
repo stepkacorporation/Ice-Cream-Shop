@@ -1,0 +1,6 @@
+<div class="alert alert-{% if message.tags == 'error' %}warning{% elif message.tags == 'success' %}success{% elif message.tags == 'info' %}info{% else %}light{% endif %} p-2 alert-dismissible fade show"
+     role="alert" style="margin-bottom: 2px;">
+    <div class="me-3">{{ message }}</div>
+    <button type="button" class="btn-close p-1" data-bs-dismiss="alert" aria-label="Close"
+            style="position: absolute; top: 50%; transform: translate(-50%, -50%);"></button>
+</div>

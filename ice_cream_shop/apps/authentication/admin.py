@@ -5,13 +5,16 @@ from .models import UserProfile, UserGroup
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('id', 'username', 'email', 'points', 'is_verified', 'is_staff')
+    list_display = ('id', 'username', 'email', 'points', 'email_is_verified', 'is_staff')
     fieldsets = (
         ('Основная информация', {
             'fields': ('first_name', 'last_name', 'username', 'password', 'email', 'user_groups', 'user_permissions'),
         }),
         ('Дополнительно', {
-            'fields': ('is_active', 'is_verified', 'is_staff', 'is_superuser', 'date_joined', 'last_login'),
+            'fields': ('is_active', 'email_is_verified', 'is_staff', 'is_superuser', 'date_joined', 'last_login'),
+        }),
+        ('Безопасность', {
+            'fields': ('email_verification_token', ),
         }),
     )
     filter_horizontal = ('user_permissions',)
