@@ -96,6 +96,10 @@ class UserProfileEmailVerificationTokenTest(UserProfileTest):
         is_blank = self.user._meta.get_field('email_verification_token').blank
         self.assertEqual(is_blank, True)
 
+    def test_email_verification_token_null(self):
+        is_null = self.user._meta.get_field('email_verification_token').null
+        self.assertEqual(is_null, True)
+
 
 class UserProfileLastEmailVerificationRequestTest(UserProfileTest):
     def test_last_email_verification_request_label(self):

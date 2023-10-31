@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -18,10 +19,16 @@ def verify_email(request):
         return HttpResponse('<h1>Все сломалось</h1>')
 
     user = UserProfile.objects.get(username=username)
-    user.email_is_verified = True
-    user.email_verification_token = None
-    user.save()
 
-    login(request, user)
+    if not user.email_is_verified:
+        user.email_is_verified = True
+        user.email_verification_token = None
+        user.save()
+
+        messages.success(request, 'Ваш email успешно подтверждён!')
+
+        login(request, user)
+    else:
+        messages.error(request, 'Ваш email уже подтверждён.')
 
     return redirect(reverse('catalog'))

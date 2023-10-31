@@ -7,7 +7,7 @@ class UserProfile(AbstractUser):
     user_groups = models.ManyToManyField('UserGroup', verbose_name='Группы', blank=True)
     points = models.PositiveIntegerField(default=0, verbose_name='Баллы', blank=True)
     email_is_verified = models.BooleanField(default=False, verbose_name='Подтвержденный email', blank=True)
-    email_verification_token = models.CharField(max_length=255, verbose_name='Email-токен', blank=True)
+    email_verification_token = models.CharField(max_length=255, verbose_name='Email-токен', blank=True, null=True)
     last_email_verification_request = models.DateTimeField(verbose_name='Дата последней отправки email пользователю', blank=True, null=True)
 
     def __str__(self):

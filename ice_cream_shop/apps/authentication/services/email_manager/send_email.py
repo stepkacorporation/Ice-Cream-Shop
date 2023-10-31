@@ -17,5 +17,5 @@ def send_an_email_to_confirm_email(user, token: str) -> None:
 
 
 def _get_confirmation_link(token: str) -> str:
-    confirmation_link = f'{settings.BASE_URL}email/verify/?token={token}'
+    confirmation_link = f'{settings.BASE_URL}auth/verify/?token={token}'
     return confirmation_link
