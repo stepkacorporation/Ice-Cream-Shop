@@ -23,7 +23,7 @@ class LogoutUserTest(TestCase):
         logged_in = self.client.session.get('_auth_user_id')
         self.assertTrue(logged_in is None)
 
-    def test_logout_user_post(self):
+    def test_logout_user_get(self):
         self.client.login(username='itsmyusername', password='its a super hard password')
 
         response = self.client.get(reverse('logout'))
