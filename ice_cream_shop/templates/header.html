@@ -18,10 +18,9 @@
                         <h6 class="dropdown-header">{{ user }}</h6>
                         <a class="dropdown-item" href="#">Настройки</a>
                         <div class="dropdown-divider"></div>
-                        <form action="{% url 'logout' %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="dropdown-item" name="logout_button">Выйти</button>
-                        </form>
+                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#logoutConformationModal">
+                            Выйти
+                        </button>
                         {% else %}
                         <a class="dropdown-item" href="{% url 'login' %}">Войти</a>
                         <a class="dropdown-item" href="{% url 'register' %}">Зарегистрироваться</a>
