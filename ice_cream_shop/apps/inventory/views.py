@@ -47,10 +47,14 @@ class ProductListView(ListView):
         context['selected_manufacturers'] = selected_manufacturers
         context['selected_tastes'] = selected_tastes
 
+        # Получаем результаты поиска и передаем их в контекст
+        search_query = self.request.GET.get('query', '')
+        context['search_query'] = search_query
+        context['products'] = Product.objects.filter(name__icontains=search_query)
+
         return context
 
     def get_queryset(self):
-        print(self.request.GET)
         queryset = super().get_queryset()
         form = self.form_class(self.request.GET)
         if form.is_valid():
@@ -78,9 +82,10 @@ class ProductListView(ListView):
                 filters &= Q(weight_in_grams__lte=max_weight)
             if tastes:
                 filters &= Q(taste__in=tastes)
+            search_query = self.request.GET.get('query')
+            if search_query:
+                filters &= Q(name__icontains=search_query)
 
             queryset = queryset.filter(filters)
-
-        print(queryset)
 
         return queryset

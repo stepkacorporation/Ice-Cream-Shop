@@ -28,8 +28,8 @@
                     </div>
                 </li>
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Найти...">
+            <form class="d-flex" method="GET" action="{% url 'catalog' %}">
+                <input class="form-control me-2" type="search" name="query" placeholder="Найти...">
                 <button class="btn btn-secondary my-sm-0" type="submit">Найти</button>
             </form>
         </div>
