@@ -30,9 +30,6 @@
         border: 2px solid #c52b6f;
         background: #e83283;
     }
-
-
-
 </style>
 {% endblock extra_styles %}
 
@@ -273,8 +270,5 @@
         // Установка выбранных вкусов
         setSelectedFilters("taste", {% if selected_tastes %}{{ selected_tastes|safe }}{% else %}[]{% endif %});
     });
-
-
-
 </script>
 {% endblock extra_scripts %}
