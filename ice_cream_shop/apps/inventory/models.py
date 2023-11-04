@@ -11,7 +11,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название товара')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     price = models.PositiveIntegerField(verbose_name='Цена')
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(verbose_name='Изображение')
 
     # Заводские данные о товаре
     brand = models.ForeignKey(ProductBrand, on_delete=models.PROTECT, verbose_name='Бренд')
