@@ -2,6 +2,7 @@ docs/
 node_modules/
 .parcel-cache/
 .idea/
+/ice_cream_shop/staticfiles/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

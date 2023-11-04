@@ -14,14 +14,14 @@ class ProductBrand(models.Model):
 
 
 class ProductType(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Название типа')
+    name = models.CharField(max_length=255, verbose_name='Название вида')
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = 'Тип продукта'
-        verbose_name_plural = 'Типы продукта'
+        verbose_name = 'Вид продукта'
+        verbose_name_plural = 'Виды продукта'
         ordering = ('name', )
 
 

@@ -1,4 +1,5 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 
 from .models import Product, Supplier, StockEntry
 from .related_models.product_related_models import ProductBrand, ProductType, ProductSupplements,\
@@ -6,7 +7,7 @@ from .related_models.product_related_models import ProductBrand, ProductType, Pr
     ProductManufacturer
 
 
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(ImportExportModelAdmin):
     prepopulated_fields = {'slug': ('name', )}
 
 
@@ -24,12 +25,12 @@ admin.site.register(Supplier, SupplierAdmin)
 admin.site.register(StockEntry, StockEntryAdmin)
 
 # product_related_models.py
-admin.site.register(ProductBrand)
-admin.site.register(ProductType)
-admin.site.register(ProductSupplements)
-admin.site.register(ProductTypeOfPackaging)
-admin.site.register(ProductFeatures)
-admin.site.register(ProductStandard)
-admin.site.register(ProductTaste)
-admin.site.register(ProductProducingCountry)
-admin.site.register(ProductManufacturer)
+admin.site.register(ProductBrand, ImportExportModelAdmin)
+admin.site.register(ProductType, ImportExportModelAdmin)
+admin.site.register(ProductSupplements, ImportExportModelAdmin)
+admin.site.register(ProductTypeOfPackaging, ImportExportModelAdmin)
+admin.site.register(ProductFeatures, ImportExportModelAdmin)
+admin.site.register(ProductStandard, ImportExportModelAdmin)
+admin.site.register(ProductTaste, ImportExportModelAdmin)
+admin.site.register(ProductProducingCountry, ImportExportModelAdmin)
+admin.site.register(ProductManufacturer, ImportExportModelAdmin)
