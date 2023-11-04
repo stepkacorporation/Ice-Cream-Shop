@@ -20,9 +20,9 @@ class ProductListView(ListView):
 
         # Передаем фильтры в контекст
         max_price = Product.objects.aggregate(max_price=models.Max('price'))['max_price']
-        context['max_price'] = max_price
+        context['max_price'] = max_price or 0
         max_weight = Product.objects.aggregate(weight_in_grams=models.Max('weight_in_grams'))['weight_in_grams']
-        context['max_weight'] = max_weight
+        context['max_weight'] = max_weight or 0
         context['product_brands'] = ProductBrand.objects.all()
         context['product_types'] = ProductType.objects.all()
         context['product_manufacturers'] = ProductManufacturer.objects.all()
