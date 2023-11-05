@@ -20,22 +20,25 @@
 {% block extra_scripts %}
 <script src="{% static 'inventory/js/catalog.js' %}"></script>
 <script>
-$(document).ready(function () {
-    // Настройка фильтров цены и веса
-    setupFilterRange("price", {{ max_price }}, {{ selected_min_price|default:0 }}, {{ selected_max_price|default:max_price }});
-    setupFilterRange("weight", {{ max_weight }}, {{ selected_min_weight|default:0 }}, {{ selected_max_weight|default:max_weight }});
+    $(document).ready(function () {
+        // Настройка фильтров цены и веса
+        setupFilterRange("price", {{ max_price }}, {{ selected_min_price|default:0 }}, {{ selected_max_price|default:max_price }});
+        setupFilterRange("weight", {{ max_weight }}, {{ selected_min_weight|default:0 }}, {{ selected_max_weight|default:max_weight }});
 
-    // Установка выбранных брендов
-    setSelectedFilters("brand", {% if selected_brands %}{{ selected_brands|safe }}{% else %}[]{% endif %});
+        // Установка выбранных брендов
+        setSelectedFilters("brand", {% if selected_brands %}{ { selected_brands | safe } } {% else %} []{% endif %});
 
-    // Установка выбранных типов
-    setSelectedFilters("type", {% if selected_types %}{{ selected_types|safe }}{% else %}[]{% endif %});
+        // Установка выбранных типов
+        setSelectedFilters("type", {% if selected_types %}{ { selected_types | safe } } {% else %} []{% endif %});
 
-    // Установка выбранных производителей
-    setSelectedFilters("manufacturer", {% if selected_manufacturers %}{{ selected_manufacturers|safe }}{% else %}[]{% endif %});
+        // Установка выбранных производителей
+        setSelectedFilters("manufacturer", {% if selected_manufacturers %}{ { selected_manufacturers | safe } } {% else %} []{% endif %});
 
-    // Установка выбранных вкусов
-    setSelectedFilters("taste", {% if selected_tastes %}{{ selected_tastes|safe }}{% else %}[]{% endif %});
-});
+        // Установка выбранных вкусов
+        setSelectedFilters("taste", {% if selected_tastes %}{ { selected_tastes | safe } } {% else %} []{% endif %});
+
+        // Разворачиваем или сворачиваем аккордеон в зависимости от размера экрана
+        resizeAccordion();
+    });
 </script>
 {% endblock extra_scripts %}

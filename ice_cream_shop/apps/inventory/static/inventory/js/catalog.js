@@ -42,3 +42,14 @@ function setupFilterRange(filterName, max, selectedMin, selectedMax) {
         }
     });
 }
+
+function resizeAccordion() {
+    if (window.innerWidth >= 768) {
+        // Если ширина экрана больше или равна 768px (порог для md в Bootstrap), разворачиваем аккордеон
+        $("#filter-collapse").addClass('show');
+        $(".accordion-button").removeClass("collapsed").attr("aria-expanded", "true");
+    } else {
+        $("#filter-collapse").removeClass('show');
+        $(".accordion-button").addClass("collapsed").attr("aria-expanded", "false");
+    }
+}
