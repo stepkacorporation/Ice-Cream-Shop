@@ -12,6 +12,7 @@ class ProductListView(ListView):
     template_name = 'inventory/catalog.html'
     context_object_name = 'products'
     form_class = ProductFilterForm
+    paginate_by = 6
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)

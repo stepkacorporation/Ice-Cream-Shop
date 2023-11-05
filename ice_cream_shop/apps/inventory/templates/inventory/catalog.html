@@ -1,278 +1,41 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block extra_styles %}
-<style>
-    #price-range, #weight-range {
-        border-radius: 10px;
-    }
-
-    #price-range .ui-slider-handle, #weight-range .ui-slider-handle{
-        outline: none;
-    }
-
-    #price-range .ui-slider-handle:active,
-    #price-range .ui-slider-handle.ui-state-active,
-    #weight-range .ui-slider-handle:active,
-    #weight-range .ui-slider-handle.ui-state-active {
-        scale: 1.3;
-    }
-
-    #price-range .ui-slider-handle:first-of-type,
-    #weight-range .ui-slider-handle:first-of-type{
-        border-radius: 5px;
-        border: 2px solid #c52b6f;
-        background: #e83283;
-    }
-
-    #price-range .ui-slider-handle:last-of-type,
-    #weight-range .ui-slider-handle:last-of-type {
-        border-radius: 5px;
-        border: 2px solid #c52b6f;
-        background: #e83283;
-    }
-</style>
+<link rel="stylesheet" href="{% static 'inventory/css/catalog.css' %}">
 {% endblock extra_styles %}
 
 {% block content %}
 <div class="container mt-3">
     <div class="row">
         <!-- Фильтры -->
-        <div class="accordion col-md-3 mb-3" id="filter-accordion">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="filter-heading">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#filter-collapse" aria-expanded="true" aria-controls="filter-collapse">
-                        Фильтры
-                    </button>
-                </h2>
-                <div id="filter-collapse" class="accordion-collapse collapse show" aria-labelledby="filter-heading"
-                     data-bs-parent="#filter-accordion">
-                    <div class="accordion-body">
-                        <form method="get">
-                            <!-- Фильтр цены -->
-                            <div class="row mb-1">
-                                <div class="col">
-                                    <h5>Цена (руб.)</h5>
-                                    <div id="price-range" class="filter-range" data-min="0" data-max="{{ max_price }}"
-                                         data-selected-min="{{ selected_min_price|default:0 }}"
-                                         data-selected-max="{{ selected_max_price|default:max_price }}"></div>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col">
-                                    <label for="min-price">Мин:</label>
-                                    <input type="text" id="min-price" class="form-control" name="min_price">
-                                </div>
-                                <div class="col">
-                                    <label for="max-price">Макс:</label>
-                                    <input type="text" id="max-price" class="form-control" name="max_price">
-                                </div>
-                            </div>
-
-                            <!-- Фильтр бренда -->
-                            {% if product_brands %}
-                            <h5>Бренд</h5>
-                            <div class="form-check mb-2" style="max-height: 150px; overflow-y: auto;">
-                                {% for brand in product_brands %}
-                                <div class="ms-1">
-                                    <input class="form-check-input" type="checkbox" value="{{ brand.id }}"
-                                           id="brand{{ brand.id }}" name="brands">
-                                    <label class="form-check-label" for="brand{{ brand.id }}">
-                                        {{ brand }}
-                                    </label>
-                                </div>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-
-                            <!-- Фильтр типа-->
-                            {% if product_types %}
-                            <h5>Тип</h5>
-                            <div class="form-check mb-2" style="max-height: 150px; overflow-y: auto;">
-                                {% for type in product_types %}
-                                <div class="ms-1">
-                                    <input class="form-check-input" type="checkbox" value="{{ type.id }}"
-                                           id="type{{ type.id }}" name="types">
-                                    <label class="form-check-label" for="type{{ type.id }}">
-                                        {{ type }}
-                                    </label>
-                                </div>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-
-                            <!-- Фильтр вкуса -->
-                            {% if product_tastes %}
-                            <h5>Вкус</h5>
-                            <div class="form-check mb-2" style="max-height: 150px; overflow-y: auto;">
-                                {% for taste in product_tastes %}
-                                <div class="ms-1">
-                                    <input class="form-check-input" type="checkbox" value="{{ taste.id }}"
-                                           id="taste{{ taste.id }}" name="tastes">
-                                    <label class="form-check-label" for="taste{{ taste.id }}">
-                                        {{ taste }}
-                                    </label>
-                                </div>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-
-                            <!-- Фильтр веса -->
-                            <div class="row mb-1">
-                                <div class="col">
-                                    <h5>Вес (г.)</h5>
-                                    <div id="weight-range" class="filter-range" data-min="0" data-max="{{ max_weight }}"
-                                         data-selected-min="{{ selected_min_weight|default:0 }}"
-                                         data-selected-max="{{ selected_max_weight|default:max_weight }}"></div>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col">
-                                    <label for="min-weight">Мин:</label>
-                                    <input type="text" id="min-weight" class="form-control" name="min_weight">
-                                </div>
-                                <div class="col">
-                                    <label for="max-weight">Макс:</label>
-                                    <input type="text" id="max-weight" class="form-control" name="max_weight">
-                                </div>
-                            </div>
-
-                            <!-- Фильтр производителя -->
-                            {% if product_manufacturers %}
-                            <h5>Производитель</h5>
-                            <div class="form-check mb-2" style="max-height: 150px; overflow-y: auto;">
-                                {% for manufacturer in product_manufacturers %}
-                                <div class="ms-1">
-                                    <input class="form-check-input" type="checkbox" value="{{ manufacturer.id }}"
-                                           id="manufacturer{{ manufacturer.id }}" name="manufacturers">
-                                    <label class="form-check-label" for="manufacturer{{ manufacturer.id }}">
-                                        {{ manufacturer }}
-                                    </label>
-                                </div>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Применить</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% include 'inventory/items/filters.html' %}
 
         <!-- Карточки мороженного -->
-        <div class="col-md-9">
-            <div class="row">
-                {% if search_query %}
-                <h3>Результаты поиска для "{{ search_query }}"</h3>
-                {% for product in products %}
-                <div class="col-sm-6 col-md-4 mb-3 d-flex">
-                    <div class="card">
-                        <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}"
-                             style="border-radius: 10px 10px 0 0; object-fit: cover; width: 100%; height: 300px;">
-                        <div class="card-body d-flex flex-column pt-2">
-                            <p class="card-title small mb-1">{{ product }}</p>
-                            <p class="card-text mt-auto">Цена: <b>{{ product.price }} руб</b>.</p>
-                            <div class="text-center">
-                                <a href="#" class="btn btn-primary">Добавить в корзину</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% empty %}
-                <p class="text-center">По результатам поиска ничего не найдено.</p>
-                {% endfor %}
-                {% else %}
-                <div class="row">
-                    {% for product in products %}
-                    <div class="col-sm-6 col-md-4 mb-3 d-flex">
-                        <div class="card">
-                            <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}"
-                                 style="border-radius: 10px 10px 0 0; object-fit: cover; width: 100%; height: 300px;">
-                            <div class="card-body d-flex flex-column pt-2">
-                                <p class="card-title small mb-1">{{ product }}</p>
-                                <p class="card-text mt-auto">Цена: <b>{{ product.price }} руб</b>.</p>
-                                <div class="text-center">
-                                    <a href="#" class="btn btn-primary">Добавить в корзину</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <p class="text-center">По результатам фильтрации ничего не найдено.</p>
-                    {% endfor %}
-                </div>
-                {% endif %}
-            </div>
-        </div>
+        {% include 'inventory/items/list_of_catalog_products.html' %}
     </div>
 </div>
 {% endblock content %}
 
 {% block extra_scripts %}
+<script src="{% static 'inventory/js/catalog.js' %}"></script>
 <script>
-    // Функция для установки выбранных фильтров
-    function setSelectedFilters(filterName, selectedValues) {
-        selectedValues.forEach(function (value) {
-            $("#" + filterName + value).prop("checked", true);
-        });
-    }
+$(document).ready(function () {
+    // Настройка фильтров цены и веса
+    setupFilterRange("price", {{ max_price }}, {{ selected_min_price|default:0 }}, {{ selected_max_price|default:max_price }});
+    setupFilterRange("weight", {{ max_weight }}, {{ selected_min_weight|default:0 }}, {{ selected_max_weight|default:max_weight }});
 
-    function setupFilterRange(filterName, max, selectedMin, selectedMax) {
-        var filterRange = $("#" + filterName + "-range");
-        var minInput = $("#min-" + filterName);
-        var maxInput = $("#max-" + filterName);
+    // Установка выбранных брендов
+    setSelectedFilters("brand", {% if selected_brands %}{{ selected_brands|safe }}{% else %}[]{% endif %});
 
-        filterRange.slider({
-            range: true,
-            min: 0,
-            max: max,
-            values: [selectedMin, selectedMax],
-            slide: function (event, ui) {
-                minInput.val(ui.values[0]);
-                maxInput.val(ui.values[1]);
-            }
-        });
+    // Установка выбранных типов
+    setSelectedFilters("type", {% if selected_types %}{{ selected_types|safe }}{% else %}[]{% endif %});
 
-        // Установка начальных значений полей ввода
-        minInput.val(filterRange.slider("values", 0));
-        maxInput.val(filterRange.slider("values", 1));
+    // Установка выбранных производителей
+    setSelectedFilters("manufacturer", {% if selected_manufacturers %}{{ selected_manufacturers|safe }}{% else %}[]{% endif %});
 
-        // Обработчики событий для полей ввода
-        minInput.on("change", function () {
-            var newMin = minInput.val();
-            var currentMax = filterRange.slider("values", 1);
-            if (newMin >= 0 && newMin < currentMax) {
-                filterRange.slider("values", 0, newMin);
-            }
-        });
-
-        maxInput.on("change", function () {
-            var currentMin = filterRange.slider("values", 0);
-            var newMax = maxInput.val();
-            if (newMax > currentMin && newMax <= max) {
-                filterRange.slider("values", 1, newMax);
-            }
-        });
-    }
-
-    $(document).ready(function () {
-        setupFilterRange("price", {{ max_price }}, {{ selected_min_price|default:0 }}, {{ selected_max_price|default:max_price }});
-        setupFilterRange("weight", {{ max_weight }}, {{ selected_min_weight|default:0 }}, {{ selected_max_weight|default:max_weight }});
-
-        // Установка выбранных брендов
-        setSelectedFilters("brand", {% if selected_brands %}{{ selected_brands|safe }}{% else %}[]{% endif %});
-
-        // Установка выбранных типов
-        setSelectedFilters("type", {% if selected_types %}{{ selected_types|safe }}{% else %}[]{% endif %});
-
-        // Установка выбранных производителей
-        setSelectedFilters("manufacturer", {% if selected_manufacturers %}{{ selected_manufacturers|safe }}{% else %}[]{% endif %});
-
-        // Установка выбранных вкусов
-        setSelectedFilters("taste", {% if selected_tastes %}{{ selected_tastes|safe }}{% else %}[]{% endif %});
-    });
+    // Установка выбранных вкусов
+    setSelectedFilters("taste", {% if selected_tastes %}{{ selected_tastes|safe }}{% else %}[]{% endif %});
+});
 </script>
 {% endblock extra_scripts %}

@@ -1,0 +1,124 @@
+<div class="accordion col-md-3 mb-3" id="filter-accordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="filter-heading">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#filter-collapse" aria-expanded="true" aria-controls="filter-collapse">
+                Фильтры
+            </button>
+        </h2>
+        <div id="filter-collapse" class="accordion-collapse collapse show" aria-labelledby="filter-heading"
+             data-bs-parent="#filter-accordion">
+            <div class="accordion-body">
+                <form method="get">
+                    <!-- Фильтр цены -->
+                    <div class="row mb-1">
+                        <div class="col">
+                            <h5>Цена (руб.)</h5>
+                            <div id="price-range" class="filter-range" data-min="0" data-max="{{ max_price }}"
+                                 data-selected-min="{{ selected_min_price|default:0 }}"
+                                 data-selected-max="{{ selected_max_price|default:max_price }}"></div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label for="min-price">Мин:</label>
+                            <input type="text" id="min-price" class="form-control" name="min_price">
+                        </div>
+                        <div class="col">
+                            <label for="max-price">Макс:</label>
+                            <input type="text" id="max-price" class="form-control" name="max_price">
+                        </div>
+                    </div>
+
+                    <!-- Фильтр бренда -->
+                    {% if product_brands %}
+                    <h5>Бренд</h5>
+                    <div class="form-check mb-2" style="max-height: 150px; overflow-y: auto;">
+                        {% for brand in product_brands %}
+                        <div class="ms-1">
+                            <input class="form-check-input" type="checkbox" value="{{ brand.id }}"
+                                   id="brand{{ brand.id }}" name="brands">
+                            <label class="form-check-label" for="brand{{ brand.id }}">
+                                {{ brand }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Фильтр типа-->
+                    {% if product_types %}
+                    <h5>Тип</h5>
+                    <div class="form-check mb-2" style="max-height: 150px; overflow-y: auto;">
+                        {% for type in product_types %}
+                        <div class="ms-1">
+                            <input class="form-check-input" type="checkbox" value="{{ type.id }}"
+                                   id="type{{ type.id }}" name="types">
+                            <label class="form-check-label" for="type{{ type.id }}">
+                                {{ type }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Фильтр вкуса -->
+                    {% if product_tastes %}
+                    <h5>Вкус</h5>
+                    <div class="form-check mb-2" style="max-height: 150px; overflow-y: auto;">
+                        {% for taste in product_tastes %}
+                        <div class="ms-1">
+                            <input class="form-check-input" type="checkbox" value="{{ taste.id }}"
+                                   id="taste{{ taste.id }}" name="tastes">
+                            <label class="form-check-label" for="taste{{ taste.id }}">
+                                {{ taste }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Фильтр веса -->
+                    <div class="row mb-1">
+                        <div class="col">
+                            <h5>Вес (г.)</h5>
+                            <div id="weight-range" class="filter-range" data-min="0" data-max="{{ max_weight }}"
+                                 data-selected-min="{{ selected_min_weight|default:0 }}"
+                                 data-selected-max="{{ selected_max_weight|default:max_weight }}"></div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label for="min-weight">Мин:</label>
+                            <input type="text" id="min-weight" class="form-control" name="min_weight">
+                        </div>
+                        <div class="col">
+                            <label for="max-weight">Макс:</label>
+                            <input type="text" id="max-weight" class="form-control" name="max_weight">
+                        </div>
+                    </div>
+
+                    <!-- Фильтр производителя -->
+                    {% if product_manufacturers %}
+                    <h5>Производитель</h5>
+                    <div class="form-check mb-2" style="max-height: 150px; overflow-y: auto;">
+                        {% for manufacturer in product_manufacturers %}
+                        <div class="ms-1">
+                            <input class="form-check-input" type="checkbox" value="{{ manufacturer.id }}"
+                                   id="manufacturer{{ manufacturer.id }}" name="manufacturers">
+                            <label class="form-check-label" for="manufacturer{{ manufacturer.id }}">
+                                {{ manufacturer }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Применить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

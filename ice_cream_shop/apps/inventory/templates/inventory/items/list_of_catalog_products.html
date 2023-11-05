@@ -1,0 +1,25 @@
+<div class="col-md-9">
+    <div class="row justify-content-center">
+        {% if search_query %}
+        <h3>Результаты поиска для "{{ search_query }}"</h3>
+        <div class="row">
+            {% for product in page_obj %}
+            {% include 'inventory/items/product_catalog_item.html' %}
+            {% empty %}
+            <p class="text-center">По результатам поиска ничего не найдено.</p>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="row">
+            {% for product in page_obj %}
+            {% include 'inventory/items/product_catalog_item.html' %}
+            {% empty %}
+            <p class="text-center">По результатам фильтрации ничего не найдено.</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Пагинация-->
+    {% include 'pagination.html' %}
+</div>

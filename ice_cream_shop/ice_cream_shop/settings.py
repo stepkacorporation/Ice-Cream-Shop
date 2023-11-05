@@ -24,7 +24,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '192.168.217.111', '192.168.169.111']
+ALLOWED_HOSTS = ['127.0.0.1', '172.23.192.1']
 
 BASE_URL = 'http://192.168.217.111:8000/'  # Изменить при продакшене
 
@@ -136,6 +136,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'apps/authentication/static'),
+    os.path.join(BASE_DIR, 'apps/inventory/static'),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

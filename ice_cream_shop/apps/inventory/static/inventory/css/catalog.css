@@ -1,0 +1,28 @@
+#price-range, #weight-range {
+    border-radius: 10px;
+}
+
+#price-range .ui-slider-handle, #weight-range .ui-slider-handle{
+    outline: none;
+}
+
+#price-range .ui-slider-handle:active,
+#price-range .ui-slider-handle.ui-state-active,
+#weight-range .ui-slider-handle:active,
+#weight-range .ui-slider-handle.ui-state-active {
+    scale: 1.3;
+}
+
+#price-range .ui-slider-handle:first-of-type,
+#weight-range .ui-slider-handle:first-of-type{
+    border-radius: 5px;
+    border: 2px solid #c52b6f;
+    background: #e83283;
+}
+
+#price-range .ui-slider-handle:last-of-type,
+#weight-range .ui-slider-handle:last-of-type {
+    border-radius: 5px;
+    border: 2px solid #c52b6f;
+    background: #e83283;
+}
