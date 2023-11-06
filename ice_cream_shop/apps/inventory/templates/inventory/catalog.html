@@ -26,16 +26,16 @@
         setupFilterRange("weight", {{ max_weight }}, {{ selected_min_weight|default:0 }}, {{ selected_max_weight|default:max_weight }});
 
         // Установка выбранных брендов
-        setSelectedFilters("brand", {% if selected_brands %}{ { selected_brands | safe } } {% else %} []{% endif %});
+        setSelectedFilters("brand", {% if selected_brands %}{{ selected_brands|safe }}{% else %}[]{% endif %});
 
         // Установка выбранных типов
-        setSelectedFilters("type", {% if selected_types %}{ { selected_types | safe } } {% else %} []{% endif %});
+        setSelectedFilters("type", {% if selected_types %}{{ selected_types|safe }}{% else %}[]{% endif %});
 
         // Установка выбранных производителей
-        setSelectedFilters("manufacturer", {% if selected_manufacturers %}{ { selected_manufacturers | safe } } {% else %} []{% endif %});
+        setSelectedFilters("manufacturer", {% if selected_manufacturers %}{{ selected_manufacturers|safe }}{% else %}[]{% endif %});
 
         // Установка выбранных вкусов
-        setSelectedFilters("taste", {% if selected_tastes %}{ { selected_tastes | safe } } {% else %} []{% endif %});
+        setSelectedFilters("taste", {% if selected_tastes %}{{ selected_tastes|safe }}{% else %}[]{% endif %});
 
         // Разворачиваем или сворачиваем аккордеон в зависимости от размера экрана
         resizeAccordion();

@@ -15,32 +15,35 @@
 </head>
 
 <body>
-<header>
+<header class="fixed-top">
     {% block header %}
     {% include 'header.html' %}
     {% endblock header %}
+
+    <div id="notifications">
+        {% if user.is_authenticated and not user.email_is_verified %}
+        <div class="alert alert-success p-2 alert-dismissible fade show"
+             role="alert" style="margin-bottom: 2px;">
+            <div class="me-3">Мы отправили вам письмо для подтверждения адреса электронной почты. Пожалуйста, перейдите
+                по
+                ссылке в письме, чтобы завершить регистрацию.
+            </div>
+            <button type="button" class="btn-close p-1" data-bs-dismiss="alert" aria-label="Close"
+                    style="position: absolute; top: 50%; transform: translate(-50%, -50%);"></button>
+        </div>
+        {% endif %}
+
+        {% block user_messages %}
+        {% if messages %}
+        {% for message in messages %}
+        {% include 'alert_message.html' %}
+        {% endfor %}
+        {% endif %}
+        {% endblock user_messages %}
+    </div>
 </header>
 
 <main>
-    {% if user.is_authenticated and not user.email_is_verified %}
-    <div class="alert alert-success p-2 alert-dismissible fade show"
-         role="alert" style="margin-bottom: 2px;">
-        <div class="me-3">Мы отправили вам письмо для подтверждения адреса электронной почты. Пожалуйста, перейдите по
-            ссылке в письме, чтобы завершить регистрацию.
-        </div>
-        <button type="button" class="btn-close p-1" data-bs-dismiss="alert" aria-label="Close"
-                style="position: absolute; top: 50%; transform: translate(-50%, -50%);"></button>
-    </div>
-    {% endif %}
-
-    {% block user_messages %}
-    {% if messages %}
-    {% for message in messages %}
-    {% include 'alert_message.html' %}
-    {% endfor %}
-    {% endif %}
-    {% endblock user_messages %}
-
     {% block content %}
     {% endblock content %}
 </main>
@@ -59,6 +62,74 @@
 <script src="{% static 'js/jquery-ui.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        // Функция для создания уведомления
+        function createNotification(message) {
+            var notification = $('<div class="alert alert-success p-2 alert-dismissible fade show" role="alert" style="margin-bottom: 2px;">' +
+                              '<div class="me-3">' + message + '</div>' +
+                              '<button type="button" class="btn-close p-1" data-bs-dismiss="alert" aria-label="Close" style="position: absolute; top: 50%; transform: translate(-50%, -50%);"></button>' +
+                              '</div>');
+            return notification;
+        }
+
+        // Устанавливает обработчик события по клику на все кнопки .add-to-cart и отправляет
+        // ajax-запрос на добавление товара в корзину пользователя, затем создает и добавляет уведомление
+        $(".add-to-cart").click(function (event) {
+            event.preventDefault();
+            var product_id = $(this).data("product-id");
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'add_to_cart' 0 %}".replace("0", product_id),
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success: function (data) {
+                    // Создаем новое уведомление
+                    var message = 'Товар "' + data.product_name + '" успешно добавлен в корзину.';
+                    var notification = createNotification(message);
+
+                    // Добавляем уведомление в контейнер
+                    $("#notifications").append(notification);
+
+                    // Устанавливаем таймер для плавного исчезновения уведомления и удаления через 5 секунд (5000 миллисекунд)
+                    setTimeout(function () {
+                        notification.fadeOut(500, function () {
+                            // После анимации исчезновения, удалить уведомление
+                            notification.remove();
+                        });
+                    }, 5000);
+
+                    // Обновляем информацию о корзине
+                    $("#cart-total").html(data.cart_total);
+                    $("#cart-total-amount").html(data.cart_total_amount);
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+  // Функция для установки верхнего отступа на основе высоты header
+  function setHeaderMargin() {
+      if (window.matchMedia('(min-width: 992px)').matches) {
+          $('main').css('margin-top', 130 + 'px');
+      } else {
+          $('main').css('margin-top', 110 + 'px');
+      }
+  }
+
+  // Вызов функции при загрузке страницы и при изменении размера окна
+  $(document).ready(function () {
+    setHeaderMargin();
+  });
+
+  $(window).on('resize', function () {
+    setHeaderMargin();
+  });
+</script>
 
 {% block extra_scripts %}
 {% endblock extra_scripts %}

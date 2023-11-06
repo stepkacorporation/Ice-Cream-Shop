@@ -1,6 +1,25 @@
 from django.db import models
 from django.conf import settings
 
+from ..inventory.models import Product
+
+
+class CartItem(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар')
+    quantity = models.PositiveIntegerField(default=0, verbose_name='Кол-во')
+
+    def __str__(self):
+        return f'{self.user} - {self.product}, {self.quantity} шт.'
+
+    def subtotal(self) -> int:
+        return self.product.price * self.quantity
+
+    class Meta:
+        verbose_name = 'Товар в корзине'
+        verbose_name_plural = 'Товары в корзине'
+        ordering = ('-id',)
+
 
 class Order(models.Model):
     ORDER_STATUS = (
