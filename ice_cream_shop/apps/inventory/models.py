@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.urls import reverse
 
 from .related_models.product_related_models import ProductBrand, ProductType, ProductSupplements,\
     ProductTypeOfPackaging, ProductFeatures, ProductStandard, ProductTaste, ProductProducingCountry, \
@@ -47,6 +47,9 @@ class Product(models.Model):
 
     def __str__(self):
         return f'{self.name}, {self.manufacturer}, {self.type_of_packaging}, {self.weight_in_grams} г.'
+
+    def get_absolute_url(self):
+        return reverse('product_info', kwargs={'product_slug': self.slug})
 
     class Meta:
         verbose_name = 'Продукт'

@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-2">{{ product }}</h1>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}" style="border-radius: 10px;">
+        </div>
+        <div class="col-md-6">
+            <div class="card border-primary mb-3">
+                <h2 class="card-header">{{ product.name }}</h2>
+                <div class="card-body pt-2">
+                    <ul class="list-unstyled mb-1">
+                        <li><strong>Вид:</strong> {{ product.type }}</li>
+                        <li><strong>Бренд:</strong> {{ product.brand }}</li>
+                        <li><strong>Вкус:</strong> {{ product.taste }}</li>
+                    </ul>
+                    <div class="mb-1">
+                        <a href="#specifications">Перейти к характеристикам</a>
+                    </div>
+                    <hr class="mt-0 mb-2">
+                    <ul class="list-unstyled">
+                        <li><strong>Цена:</strong> {{ product.price }} руб</li>
+                    </ul>
+                    <div class="text-center">
+                        <a href="#" class="btn btn-primary">Добавить в корзину</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3 small">
+                <div class="card-body ps-1 pe-1 pt-2 pb-0">
+                    <p class="p-0 ps-2 mb-1">Пищевая ценность продукта (на 100 г.)</p>
+                    <hr class="m-0 mb-1">
+                    <ul class="row list-unstyled">
+                        <li class="col-3 d-flex flex-column text-center p-0">
+                            <div><b>{{ product.proteins_in_grams }}</b></div>
+                            <div>белки</div>
+                        </li>
+                        <li class="col-3 d-flex flex-column text-center p-0">
+                            <div><b>{{ product.fats_in_grams }}</b></div>
+                            <div>жиры</div>
+                        </li>
+                        <li class="col-3 d-flex flex-column text-center p-0">
+                            <div><b>{{ product.carbohydrates_in_grams }}</b></div>
+                            <div>углеводы</div>
+                        </li>
+                        <li class="col-3 d-flex flex-column text-center p-0">
+                            <div><b>{{ product.energy_value }}</b></div>
+                            <div>ккал</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="accordion mb-3" id="specifications">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingSpecifications">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseSpecifications" aria-expanded="true" aria-controls="collapseSpecifications">
+                            Характеристики
+                        </button>
+                    </h2>
+                    <div id="collapseSpecifications" class="accordion-collapse collapse show" aria-labelledby="headingSpecifications"
+                         data-bs-parent="#specifications">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="mb-1">Свойства</h5>
+                                    <hr class="m-0 mb-1">
+                                    <ul class="list-unstyled">
+                                        <li><strong>Бренд:</strong> {{ product.brand }}</li>
+                                        <li><strong>Код товара:</strong> {{ product.code }}</li>
+                                        <li><strong>Вид:</strong> {{ product.type }}</li>
+                                        <li><strong>Добавки:</strong> {{ product.supplements }}</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="mb-1">Дополнительно</h5>
+                                    <hr class="m-0 mb-1">
+                                    <ul class="list-unstyled">
+                                        <li><strong>На палочке:</strong> {% if product.on_a_stick %}Да{% else %}Нет{% endif %}</li>
+                                        <li><strong>Вид упаковки:</strong> {{ product.type_of_packaging }}</li>
+                                        <li><strong>Особенности:</strong> {{ product.features }}</li>
+                                        <li><strong>Стандарт:</strong> {{ product.standard }}</li>
+                                        <li><strong>Вес, в граммах:</strong> {{ product.weight_in_grams }}</li>
+                                        <li><strong>Вкус:</strong> {{ product.taste }}</li>
+                                        <li><strong>В глазури:</strong> {% if product.in_the_glaze %}Да{% else %}Нет{% endif %}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="mb-1">Хранение</h5>
+                                    <hr class="m-0 mb-1">
+                                    <ul class="list-unstyled">
+                                        <li><strong>Температура хранения:</strong> {{ product.storage_temperature }}</li>
+                                        <li><strong>Срок годности:</strong> {{ product.expiration_date }}</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="mb-1">Производство</h5>
+                                    <hr class="m-0 mb-1">
+                                    <ul class="list-unstyled">
+                                        <li><strong>Производитель:</strong> {{ product.manufacturer }}</li>
+                                        <li><strong>Страна-производитель:</strong> {{ product.producing_country }}</li>
+                                        <li><strong>Энергетическая ценность:</strong> {{ product.energy_value }} ккал
+                                        </li>
+                                        <li><strong>Жиры:</strong> {{ product.fats_in_grams }} г</li>
+                                        <li><strong>Белки:</strong> {{ product.proteins_in_grams }} г</li>
+                                        <li><strong>Углеводы:</strong> {{ product.carbohydrates_in_grams }} г</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

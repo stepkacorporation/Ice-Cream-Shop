@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import Q
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from .models import Product
 from .forms import ProductFilterForm
@@ -95,3 +95,15 @@ class ProductListView(ListView):
             queryset = queryset.filter(filters)
 
         return queryset
+
+
+class ShowProductInfo(DetailView):
+    model = Product
+    template_name = 'inventory/product_info.html'
+    slug_url_kwarg = 'product_slug'
+    context_object_name = 'product'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = context['product']
+        return context
