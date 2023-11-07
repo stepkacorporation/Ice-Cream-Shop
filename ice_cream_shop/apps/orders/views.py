@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import ListView
 
 from ..inventory.models import Product
 from ..inventory.utils import DataMixin
@@ -25,8 +26,23 @@ def add_to_cart(request, product_id):
 
 
 def remove_from_cart(request, cart_item_id):
-    pass
+    cart_item = get_object_or_404(CartItem, id=cart_item_id)
+    cart_item.delete()
+    return redirect('cart')
 
 
-def view_cart(request):
-    pass
+class CartView(DataMixin, ListView):
+    model = CartItem
+    template_name = 'orders/cart.html'
+    context_object_name = 'cart_items'
+
+    def get_queryset(self):
+        return CartItem.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        unique_item_count = CartItem.objects.filter(user=self.request.user).count()
+        user_context = super().get_user_context_data(title='Корзина', unique_item_count=unique_item_count)
+
+        return context | user_context
