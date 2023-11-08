@@ -18,10 +18,15 @@ class ProductListView(DataMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
 
+        params = self.request.GET.copy()  # Копия словаря get-параметров
+        params.pop('page', None)
+
         max_price = Product.objects.aggregate(max_price=models.Max('price'))['max_price']
         max_weight = Product.objects.aggregate(weight_in_grams=models.Max('weight_in_grams'))['weight_in_grams']
 
         user_context = super().get_user_context_data(
+            params=params.urlencode(),
+
             title='Каталог',
             current_url=self.request.path,
 
