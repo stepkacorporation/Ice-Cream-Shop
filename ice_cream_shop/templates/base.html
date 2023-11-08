@@ -109,6 +109,12 @@
                 error: function (xhr) { // Добавляем обработчик ошибок
                     if (xhr.status === 400) { // Проверяем статус-код ошибки
                         var errorData = JSON.parse(xhr.responseText);
+
+                        if (errorData.error_type == 'is_not_authenticated') {
+                            window.location.href = "{% url 'login' %}";
+                            return;
+                        }
+
                         var errorMessage = errorData.error;
                         var notification = createNotification(errorMessage, 'warning');
                         $("#notifications").append(notification);
@@ -127,10 +133,12 @@
 <script>
   // Функция для установки верхнего отступа на основе высоты header
   function setHeaderMargin() {
-      if (window.matchMedia('(min-width: 992px)').matches) {
-          $('main').css('margin-top', 130 + 'px');
-      } else {
-          $('main').css('margin-top', 110 + 'px');
+      if (!window.location.href.includes('auth')) { // Проверка URL
+          if (window.matchMedia('(min-width: 992px)').matches) {
+              $('main').css('margin-top', 130 + 'px');
+          } else {
+              $('main').css('margin-top', 110 + 'px');
+          }
       }
   }
 

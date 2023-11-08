@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView
@@ -8,6 +9,13 @@ from .models import CartItem
 
 
 def add_to_cart(request, product_id):
+    if not request.user.is_authenticated:
+        messages.error(request, 'Для добавления товара в корзину необходимо сначала войти в свой аккаунт.')
+        return JsonResponse({'error_type': 'is_not_authenticated'}, status=400)
+
+    if not request.user.email_is_verified:
+        return JsonResponse({'error': f'Для добавления товара в корзину необходимо сначала подтвердить свою эл. почту.'}, status=400)
+
     product = get_object_or_404(Product, id=product_id)
 
     cart, created = CartItem.objects.get_or_create(user=request.user, product=product)
