@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView
 
 from ..inventory.models import Product
@@ -25,12 +25,6 @@ def add_to_cart(request, product_id):
     return JsonResponse(product_info | cart_info)
 
 
-def remove_from_cart(request, cart_item_id):
-    cart_item = get_object_or_404(CartItem, id=cart_item_id)
-    cart_item.delete()
-    return redirect('cart')
-
-
 class CartView(DataMixin, ListView):
     model = CartItem
     template_name = 'orders/cart.html'
@@ -43,6 +37,56 @@ class CartView(DataMixin, ListView):
         context = super().get_context_data(**kwargs)
 
         unique_item_count = CartItem.objects.filter(user=self.request.user).count()
-        user_context = super().get_user_context_data(title='Корзина', unique_item_count=unique_item_count)
+
+        user_context = super().get_user_context_data(
+            title='Корзина',
+            unique_item_count=unique_item_count,
+        )
 
         return context | user_context
+
+
+def decrease_cart_item(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, id=cart_item_id)
+
+    if cart_item.quantity >= 1:
+        cart_item.quantity -= 1
+        cart_item.save()
+
+    response_data = {
+        'cart_item_quantity': cart_item.quantity,
+        'cart_item_subtotal': cart_item.product.price * cart_item.quantity,
+        'cart_total': DataMixin.get_cart_total(request),
+        'cart_total_amount': DataMixin.get_cart_total_amount(request),
+    }
+
+    return JsonResponse(response_data)
+
+
+def increase_cart_item(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, id=cart_item_id)
+
+    cart_item.quantity += 1
+    cart_item.save()
+
+    response_data = {
+        'cart_item_quantity': cart_item.quantity,
+        'cart_item_subtotal': cart_item.product.price * cart_item.quantity,
+        'cart_total': DataMixin.get_cart_total(request),
+        'cart_total_amount': DataMixin.get_cart_total_amount(request),
+    }
+
+    return JsonResponse(response_data)
+
+
+def remove_from_cart(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, id=cart_item_id)
+    cart_item.delete()
+
+    response_data = {
+        'cart_total': DataMixin.get_cart_total(request),
+        'cart_total_amount': DataMixin.get_cart_total_amount(request),
+        'unique_item_count': CartItem.objects.filter(user=request.user).count(),
+    }
+
+    return JsonResponse(response_data)
