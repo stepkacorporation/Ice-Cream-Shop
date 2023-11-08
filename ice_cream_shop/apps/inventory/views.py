@@ -28,10 +28,10 @@ class ProductListView(DataMixin, ListView):
             # Передаем фильтры в контекст
             max_price=max_price or 1,
             max_weight=max_weight or 1,
-            product_brands=ProductBrand.objects.all(),
-            product_types=ProductType.objects.all(),
-            product_manufacturers=ProductManufacturer.objects.all(),
-            product_tastes=ProductTaste.objects.all(),
+            product_brands=ProductBrand.objects.filter(product__isnull=False).distinct(),
+            product_types=ProductType.objects.filter(product__isnull=False).distinct(),
+            product_manufacturers=ProductManufacturer.objects.filter(product__isnull=False).distinct(),
+            product_tastes=ProductTaste.objects.filter(product__isnull=False).distinct(),
 
             # Получаем выбранные значения фильтров из GET-параметров и сохраняем их в контексте
             selected_min_price=self.request.GET.get('min_price'),
