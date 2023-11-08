@@ -41,6 +41,7 @@ class CartView(DataMixin, ListView):
         user_context = super().get_user_context_data(
             title='Корзина',
             unique_item_count=unique_item_count,
+            current_url=self.request.path,
         )
 
         return context | user_context
