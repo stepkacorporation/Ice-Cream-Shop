@@ -9,7 +9,12 @@ from .models import CartItem
 
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
+
     cart, created = CartItem.objects.get_or_create(user=request.user, product=product)
+
+    if product.quantity <= cart.quantity:
+        return JsonResponse({'error': f'Невозможно больше добавить "{product.name}" в корзину.'}, status=400)
+
     cart.quantity += 1
     cart.save()
 
@@ -50,7 +55,7 @@ class CartView(DataMixin, ListView):
 def decrease_cart_item(request, cart_item_id):
     cart_item = get_object_or_404(CartItem, id=cart_item_id)
 
-    if cart_item.quantity >= 1:
+    if cart_item.quantity > 1:
         cart_item.quantity -= 1
         cart_item.save()
 
@@ -66,6 +71,9 @@ def decrease_cart_item(request, cart_item_id):
 
 def increase_cart_item(request, cart_item_id):
     cart_item = get_object_or_404(CartItem, id=cart_item_id)
+
+    if cart_item.quantity >= cart_item.product.quantity:
+        return JsonResponse({'error': f'Невозможно больше добавить "{cart_item.product.name}" в корзину.'}, status=400)
 
     cart_item.quantity += 1
     cart_item.save()

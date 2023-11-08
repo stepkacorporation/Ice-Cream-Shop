@@ -79,12 +79,9 @@
 
 {% block extra_scripts %}
 <script>
-    $(".col-md-8 .card:last-child").removeClass("mb-3");
-
-</script>
-
-<script>
     $(document).ready(function () {
+        $(".col-md-8 .card:last-child").removeClass("mb-3");
+
         $(".btn-decrease").click(function (event) {
             event.preventDefault();
             var cart_item_id = $(this).data("cart-item-id");
@@ -123,6 +120,19 @@
                     $("#cart-item-" + cart_item_id + "-subtotal").html(data.cart_item_subtotal);
                     $("#cart-total-count").html(data.cart_total);
                     $("#cart-total-amount-price").html(data.cart_total_amount);
+                },
+                error: function (xhr) { // Добавляем обработчик ошибок
+                    if (xhr.status === 400) { // Проверяем статус-код ошибки
+                        var errorData = JSON.parse(xhr.responseText);
+                        var errorMessage = errorData.error;
+                        var notification = createNotification(errorMessage, 'warning');
+                        $("#notifications").append(notification);
+                        setTimeout(function () {
+                            notification.fadeOut(500, function () {
+                                notification.remove();
+                            });
+                        }, 2000);
+                    }
                 }
             });
         });

@@ -24,9 +24,9 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '172.23.192.1']
+ALLOWED_HOSTS = ['127.0.0.1', '172.23.192.1', '192.168.210.111']
 
-BASE_URL = 'http://192.168.217.111:8000/'  # Изменить при продакшене
+BASE_URL = 'http://127.0.0.1/'  # Изменить при продакшене
 
 # Application definition
 
